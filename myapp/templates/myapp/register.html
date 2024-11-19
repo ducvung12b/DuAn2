@@ -1,0 +1,80 @@
+{%load static%}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image:url('{% static "imgg/allfood.jpg" %}');
+        }
+        .register-container {
+            width: 500px;
+            height: 700px;
+            padding: 16px;
+            background-color: rgb(221, 223, 187);
+            margin: 0 auto;
+            margin-top: 100px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type=text], input[type=password],input[type=email] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        
+        #id_email{
+            width: 500px;
+            height: 40px;
+        }
+        button {
+            background-color:rgb(221, 231, 80);
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    
+    <form class="form_register" method="POST" action="">
+        {% csrf_token %}
+        <div class="register-container">
+            <img src="{% static "imgg/logo.png" %}" alt="Ảnh" style="padding-left: 160px;width: 180px;">
+            <br>
+        <label for="username">Tên Tài Khoản:</label>
+        <input type="text" placeholder="Nhập Tài Khoản" name="username" required><br>
+        <label for="email">Email:</label>
+        <input type="email" placeholder="Nhập Email" name="email" required><br>
+        <label for="password1">Mật Khẩu:</label>
+        <input type="password" placeholder="Nhập Mật Khẩu" name="password1" required><br>
+        <label for="password2">Nhập Lại Mật Khẩu:</label>
+        <input type="password" placeholder="Nhập Lại Mật Khẩu" name="password2" required><br>
+        <button type="submit" style="color: rgb(163, 9, 29);"><b style="font-size: 17px;">Đăng Ký</b></button>
+        <p style="padding-left: 130px;">Tôi Đã Có Tài Khoản . <a href="{% url 'login' %}">Đăng Nhập</a></p>
+        
+        </div>
+    </form>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <!-- <h5>Register</h5>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" name = 'Create User'>
+    </form> -->
+</body>
+</html>
+
+    
+   

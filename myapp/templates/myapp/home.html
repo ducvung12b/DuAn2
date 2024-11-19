@@ -1,0 +1,56 @@
+{% extends "myapp/base.html" %}
+{%load static%}
+{%block home%}
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+    <h2 style="padding-left: 40%;">Món Ăn Ngon </h2>
+<div class="row">
+
+    {% for recipe in recipes %}
+    <div class="col-md-4">
+        <div class="ibox" style="padding-top: 20px;">
+            <div class="ibox-content product-box" >
+                {% if recipe.images.first %}
+                <div class="product"  style="height: 170px;">
+                    <img style="height: 170px;width: 320px;"  src="{{ recipe.images.first.image.url }}" alt="">
+                </div>
+                {% endif %}
+                <div class="product-desc">
+                    <span class="product-price">
+                        {{ recipe.average_rating }} {{recipe.tym}} <i class="fa fa-star checked"></i>
+                    </span>
+                    <small class="text-muted">Đăng bởi: <b>{{ recipe.author.username }}</b> </small><!-- Hiển thị người đăng -->
+                    <br>  
+                    <small class="text-muted">Lược Xem : {{ recipe.views }}</small>
+                    <a href="{%url 'detail' recipe.id %}" class="product-name"> {{recipe.title}}</a>
+
+                    <!-- <div class="small m-t-xs">
+                        {{recipe.introduce}}
+                
+                    </div> -->
+                    <div>
+                    <small style="float: left;" class="text-muted">Thể Loại : </small>
+                            
+                                {% for category in recipe.classify %}
+                                    <small class="text-muted" style="float: left;"> {{ category }} </small>
+                                {% endfor %}   
+                    </div>       
+
+                    <div class="m-t text-righ" style='padding-top: 20px;'>
+
+                        <a href="{% url 'like_recipe' recipe.id %}" class="btn btn-xs btn-outline btn-primary" style="height: 30px;width: 90px;padding-top: 7px;background-color: rgb(235, 93, 93);border: 1px solid #b91111;" > Yêu Thích </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}    
+    
+       
+</div>
+</div>
+
+{% endblock home%}
+

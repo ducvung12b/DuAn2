@@ -1,0 +1,41 @@
+{% extends "myapp/base.html" %}
+{%load static%}
+
+{% block mypost%}
+<link rel="stylesheet" href="{%static "css/mypost.css"%}">
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-center row">
+        
+        {% for recipe in recipes %}
+        
+        <div class="col-md-10" style="padding-top: 10px;">
+            <div class="row p-2 bg-white border rounded">
+                {% if recipe.images.first %}
+                <div class="col-md-3 mt-1"><img class="img-fluid img-responsive rounded product-image" style="width: 200px;height: 150px;" src="{{ recipe.images.first.image.url }}"></div>
+                {% endif %}
+                <div class="col-md-6 mt-1">
+                    <h4>{{recipe.title}}</h4>
+                    <br></br>
+                    <h5 class="text-justify text-truncate para mb-0">Ngày Đăng : {{recipe.images.first.uploaded_at|date:"d/m/Y"}}</h5>
+                    <h5 class="text-justify text-truncate para mb-0">Ngày Chỉnh Sửa:</h5>
+                </div>
+                <div class="align-items-center align-content-center col-md-3 border-left mt-1">
+                    <div class="d-flex flex-column mt-4"><a href="{% url 'edit_recipe' recipe.id %}" class="btn btn-primary btn-sm" type="button">Chỉnh Sửa</a>
+                        <br>
+                        <a href="{% url 'delete_recipe' recipe.id %}" class="btn btn-outline-danger">Xóa</a></div>
+                </div>
+            </div>
+            
+            
+            
+        </div>
+
+        {% endfor %}
+        {% if recipes.count == 0 %}
+    <p>Bạn chưa đăng công thức nào.</p>
+        {% endif %}
+        
+    </div>
+</div>
+
+{% endblock mypost%}

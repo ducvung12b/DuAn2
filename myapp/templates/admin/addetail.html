@@ -1,0 +1,277 @@
+{% extends "admin/admin.html" %}
+{%load static%}
+
+
+
+{%block addetail%}
+<!--  CSS -->
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+<link rel="stylesheet" href="{%static "css/fixdetail.css"%}">
+<link rel="stylesheet" href="{%static "css/comment.css"%}">
+
+<!--  JS -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="{%static "js/detail.js"%}"></script>
+
+
+
+
+
+
+
+<div class="container">
+	<div class="card">
+		<div class="container-fliud">
+			
+			<div class="wrapper row">
+				<div class="preview col-md-6">
+					
+					<div class="preview-pic tab-content">
+						{% for image in images|slice:":4" %}
+						<div class="tab-pane {% if forloop.first %}active{% endif %}" id="pic-{{ forloop.counter }}">
+							<img src="{{ image.image.url }}" style="width: 500px;height: 500px; border: 2px solid #000000;"/>
+						</div>
+					{% endfor %}
+				</div>
+			
+				<ul class="preview-thumbnail nav nav-tabs">
+					{% for image in images|slice:":4" %}
+						<li class="{% if forloop.first %}active{% endif %}">
+							<a data-target="#pic-{{ forloop.counter }}" data-toggle="tab">
+								<img src="{{ image.image.url }}" style="width: 100px;height: 60px;border: 1px solid #0d1214;"/>
+							</a>
+						</li>
+					{% endfor %}
+					</ul>
+					
+				</div>
+				<div class="details col-md-6">
+					<h3 class="product-title">Tên Món Ăn : {{recipe.title}}</h3>
+					<div class="rating">
+						<span class="review-no">Lược Xem : {{ recipe.views }}</span>
+                        <p>Đánh giá trung bình: {{ recipe.average_rating }}<i class="fa fa-star checked"></i> / 5<i class="fa fa-star checked"></i></p>
+					</div>
+					<p class="product-title">Giới Thiệu : </p> <p>{{recipe.introduce}}</p>
+					<h5 class="product-title">mô tả cách chế biến: </h5>
+					<p class="product-description">{{recipe.description}}</p>
+					
+                     
+                    <br>
+                    <!-- RATING FORM -->
+                          
+					<br>
+
+
+
+					
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+
+<br><br>
+
+<!-- Hiển thị danh sách và số lượng bình luận -->
+<h3>Những Đánh Giá Khác ({{ total_count }}) :</h3>
+<br>
+
+<!-- Kiểm tra xem comment có reply hay không -->
+{% if comments.count > 0 %}
+
+ <!-- Container bọc toàn bộ reply (chỉ hiển thị nếu có reply) -->
+<div style="max-height: 600px;  overflow-y: auto; border: 4px solid #e8ea61; padding: 10px; border-radius: 5px;">
+
+
+<div class="comments-section" style="padding-left: 50px; width: 90%;">
+    {% for comment in comments %}
+        <div class="comment" style="padding-top: 20px;">
+            <p style="border-bottom: 1px solid #000000;"></p>
+            <p><strong>{{ comment.user.username }}</strong> - {{ comment.created_at }}</p>
+            <p>{{ comment.content }}</p>
+
+            <!-- Nút duy nhất để xem reply và form trả lời -->
+            <a style="padding-right: 20px;" href="#" class="toggle-replies-button" data-comment-id="{{ comment.id }}">Xem Trả lời</a>
+
+            <!-- Nút xóa bình luận chính -->
+            
+            <a  href="{% url 'addelete_comment' comment.id %}" class="btn btn-danger">Xóa Bình Luận </a>
+            
+            <!-- Form trả lời và reply, ẩn mặc định -->
+            <div class="reply-section" id="reply-section-{{ comment.id }}" style="display: none; padding-left: 40px;">
+                
+                 <!-- Kiểm tra xem comment có reply hay không -->
+                 {% if comment.replies.count > 0 %}
+
+                 <!-- Container bọc toàn bộ reply (chỉ hiển thị nếu có reply) -->
+                 <div style="max-height: 200px; overflow-y: auto; border: 1px solid #ffffff; padding: 10px; border-radius: 5px;">
+
+                    <!-- Hiển thị reply --> 
+                    <div class="replies"  >
+                        {% for reply in comment.replies.all %}
+                            <div class="reply">
+                                <p><strong>{{ reply.user.username }}</strong> - {{ reply.created_at }}</p>
+                                <p>{{ reply.content }}</p>
+
+                                <p style="border-bottom: 1px solid #000000;"></p>
+                                <!-- Nút xóa reply -->
+                                <a href="{% url 'addelete_comment' reply.id %}" class="btn btn-danger">Xóa Trả Lời</a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                <!-- Form trả lời -->
+                 <h5>Nhập Bình Luận Của Bạn :</h5>
+                <form method="POST" class="reply-form" id="reply-form-{{ comment.id }}">
+                    {% csrf_token %}
+                    <textarea style="height: 45px;" name="content" rows="2" placeholder="Nhập Vào Đây......" class="form-control"></textarea>
+                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                    <br>
+                    <button type="submit" class="btn btn-primary">Trả Lời</button>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+</div>
+{% endif %}
+
+
+<!-- Form bình luận -->
+<h2 style="background-color: rgb(237, 228, 155);">Bình Luận Công Thức {{ recipe.title }} : </h2>
+<form method="POST" style="padding-left: 50px; width: 90%;">
+    {% csrf_token %}
+
+    <!-- Tạo label và trường nhập liệu cho form -->
+    <div class="form-group" >
+        <label for="id_content">Nhập Bình Luận Của Bạn :</label>
+		<br>
+        <textarea style="height: 45px;" id="id_content" name="content" rows="3" placeholder="Nhập Vào Đây......" class="form-control">{{ form.content.value }}</textarea>
+		<br>
+		<button type="submit" class="btn btn-primary" style="padding-top: 10px;">Bình Luận</button>
+        <br>
+        <p></p>
+		
+	</div>
+
+    
+</form>
+
+
+
+<!-- JavaScript để hiển thị reply và form trả lời -->
+<script>
+    document.querySelectorAll('.toggle-replies-button').forEach(function(button) {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            var commentId = this.getAttribute('data-comment-id');
+            var replySection = document.getElementById('reply-section-' + commentId);
+
+            // Chuyển đổi hiển thị phần reply và form trả lời
+            if (replySection.style.display === 'none' || replySection.style.display === '') {
+                replySection.style.display = 'block';
+                this.textContent = 'Ẩn Trả lời';
+            } else {
+                replySection.style.display = 'none';
+                this.textContent = 'Xem Trả lời';
+            }
+        });
+    });
+</script>
+
+<p style="padding-bottom: 100px;"></p>
+
+
+
+<!-- RATING -->
+<script>
+const stars = document.querySelectorAll('.star');
+const starsInput = document.getElementById('stars-input');
+const resetButton = document.querySelector('.btn-secondary'); // Nút reset
+
+stars.forEach(star => {
+    star.addEventListener('click', () => {
+        const value = star.getAttribute('data-value');
+        starsInput.value = value; // Gán giá trị vào input ẩn
+        updateStars(value);
+    });
+});
+
+// Hàm cập nhật ngôi sao
+function updateStars(value) {
+    stars.forEach(star => {
+        if (parseInt(star.getAttribute('data-value')) <= parseInt(value)) {
+            star.classList.add('filled');
+        } else {
+            star.classList.remove('filled');
+        }
+    });
+}
+
+// Hàm xử lý khi bấm nút reset
+resetButton.addEventListener('click', () => {
+    starsInput.value = 0; // Đặt giá trị input ẩn thành 0
+    stars.forEach(star => {
+        star.classList.remove('filled'); // Xóa các ngôi sao đã được chọn
+    });
+});
+
+
+const recipeId = document.getElementById('recipe-container').getAttribute('data-recipe-id');
+
+// Nút reset đã có
+resetButton.addEventListener('click', () => {
+    const recipeId = "{{ recipe.id }}"; // Đảm bảo bạn truyền đúng recipe ID từ template
+    
+    // Gửi yêu cầu POST để reset đánh giá
+    fetch(`/recipe/${recipeId}/reset_rating/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}', // Gửi CSRF token
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Lỗi khi reset đánh giá');
+        }
+    })
+    .then(data => {
+        alert(data.message); // Thông báo khi reset thành công
+        location.reload(); // Tự động tải lại trang
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
+
+</script>
+
+
+
+<style>
+.star-rating {
+    display: flex;
+    cursor: pointer;
+}
+
+.star {
+    font-size: 2rem;
+    color: #ccc; /* Màu cho ngôi sao chưa được chọn */
+}
+
+.star.filled {
+    color: #ec9a3b; /* Màu cho ngôi sao được chọn */
+}
+</style>
+  {% endblock addetail%}

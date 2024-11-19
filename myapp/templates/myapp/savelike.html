@@ -1,0 +1,39 @@
+{% extends "myapp/base.html" %}
+{%load static%}
+
+{% block savelike%}
+<link rel="stylesheet" href="{%static "css/savelike.css"%}">
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-center row">
+        <div class="col-md-10">
+
+            {% if liked_recipes %}
+                {% for recipe in liked_recipes %}
+
+                <div class="row p-2 bg-white border rounded mt-2">
+                    <div class="col-md-3 mt-1">
+                        
+                        <img class="img-fluid img-responsive rounded product-image" style="width: 200px;height: 150px;" src="{{ recipe.images.first.image.url }}">
+                        
+                    </div>
+                    <div class="col-md-6 mt-1">
+                        <h4>{{recipe.title}} </h4>
+                        4 <i class="fa fa-star checked" style="color: yellow;"></i>
+                        <h5 class="text-justify text-truncate para mb-0">Giới Thiệu : {{recipe.introduce}}<br><br></h5>
+                    </div>
+                    <div class="align-items-center align-content-center col-md-3 border-left mt-1">
+                        <div class="d-flex flex-column mt-4"><a href="{% url 'detail' recipe.id %}" class="btn btn-outline-success">Xem Chi Tiết </a>
+                            <br>
+                            <a  href="{% url 'unlike_recipe' recipe.id %}" class="btn btn-outline-warning" type="button">Bỏ Thích</a></div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>Bạn chưa yêu thích công thức nào.</p>
+            {% endif %}
+        </div>
+        
+    </div>
+</div>
+
+{% endblock savelike%}

@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Link Css -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="{%static "css/fixbase.css"%}">
+    <link rel="stylesheet" href="{%static "css/fixhome.css"%}">
+
+    <!-- Link Js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    {% comment %} <script type="module" src="{%static "js/vung.js" %}" ></script> {% endcomment %}
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script type='text/javascript'>
+      var user = '{{request.user}}'
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+            }
+            return cookieValue;
+      }
+      const csrftoken = getCookie('csrftoken');  
+    </script> 
+
+
+    <title>Document</title>
+    
+</head> 
+<body>
+    <div class='home'>
+        <a href="{% url 'home' %}"><img style="width: 150px; height: 100px;" src="{% static "imgg/logo.png" %}" alt=""></a>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" style="height: 100px;width: auto; padding-left: 40px;">     
+            <div class="left">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="height: 95px; padding-top:35px;padding-left: 45px;">
+                      Lựa Chọn
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color: rgb(216, 210, 203);">
+                      <li><a class="dropdown-item" href="{%url 'rating_recipes'%}" style="padding-left: 45px;">Đánh Giá</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="{%url 'view_recipes'%}"style="padding-left: 45px;">Lượt Xem</a></li>
+                    </ul>
+                   </li>
+                </ul>
+            </div>
+            <div class="right" style="padding-left: 70% ;">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!-- MEN -->
+                <li class="nav-item dropdown">
+                  <!-- USER  -->
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="height: 95px; padding-top:35px;padding-left: 15px;">Người Dùng : 
+                    {{request.user}}
+                  </a>
+                  <ul class="dropdown-menu "style="background-color: rgb(216, 210, 203) ">
+                    <!--  -->
+                    <li><a class="dropdown-item" style="padding-left: 50px;" href="{%url 'savelike'%}">Đã Thích</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <!--  -->
+                    <li><a class="dropdown-item" style="padding-left: 50px;" href="{%url 'mypost'%}">Bài Của Bạn</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <!-- CheckOut -->
+                    <li><a class="dropdown-item" style="padding-left: 50px;" href="{%url 'postpage' %}">Đăng Bài</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <!-- Out -->
+                    <li><a class="dropdown-item" style="padding-left: 50px;" href="{% url 'logout' %}">Thoát</a></li>
+                  </ul>
+                </li>
+            </div>
+
+          </nav>
+    </div>
+    {% block detail %} 
+    {% block mypost %}
+    {% block postpage %}
+    {% block savelike %}
+    {%  block edit %}
+    {% block card %}{% endblock card %}
+
+
+    <div class="rectangle" style="background-image: url('{% static "imgg/allfood.jpg" %}');width:auto;height=500px">
+        <div class="search-container">
+          <form method=POST action="{% url 'search' %}">
+            {% csrf_token %}
+            <input type="search" class="search-box" aria-label="Search"  name='searched' placeholder="Tìm Kiếm...">
+            <button type="submit" class="submit-btn">Tìm Kiếm</button>
+          </form>
+        </div>
+    </div>
+    {% block search %}{% endblock search %}
+    {% block home %}{% endblock home %}
+    {% block classify %}{% endblock classify %}
+    
+
+    {% endblock edit %}
+{% endblock savelike %}
+{% endblock postpage %}
+{% endblock mypost %}
+{% endblock detail %}
+</body>
+
+
+</html>

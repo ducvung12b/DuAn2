@@ -1,0 +1,54 @@
+{% extends "myapp/base.html" %}
+{%load static%}
+
+{% block postpage%}
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+<link rel="stylesheet" href="{%static "css/postpage.css"%}">
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+<div class="container">
+	<div class="card">
+		<div class="container-fliud">
+			<div class="wrapper row">
+				{% if error %}
+    				<p style="color: red;">{{ error }}</p>
+				{% endif %}
+				<div class="preview col-md-6">
+					<label for='title' class="product-title">Tên Món Ăn :	</label >
+					<input type="text" id="title" name="title" style="width: 300px;height: 40px;" required>
+					<br>
+						<label for="classify">Chọn phân loại món ăn:</label>
+						<label><input type="checkbox" name="classify" value="Chay"{% if "Chay" in recipe.classify %}checked{% endif %} > Chay</label>
+						<label><input type="checkbox" name="classify" value="Mặn"{% if "Man" in recipe.classify %}checked{% endif %} > Mặn</label>
+						<label><input type="checkbox" name="classify" value="Kiên"{% if "Kien" in recipe.classify %}checked{% endif %} > Kiên</label>
+						<label><input type="checkbox" name="classify" value="Béo"{% if "Beo" in recipe.classify %}checked{% endif %}  > Béo</label>
+					
+						<br>
+					<label for='introduce' class="product-title">Giới Thiệu :</label >
+					<input id="introduce" name="introduce" style="width: 300px;height: 40px;" required>
+					<br>
+					<label for='description' class="product-description">Mô Tả Chế Biến : </label > 
+					<textarea id="description" name="description" style="width: 600px;height: 80px;" required></textarea>
+					<br>
+					<label for='images' class="product-description">Hình Ảnh : </label > 
+					<input class="btn btn-default"  type="file" id="images" name="images" multiple>
+				</div>
+					<br>
+					<div class="action">
+						<button class="add-to-cart btn btn-default" type="submit" style='background-color: rgb(64, 168, 64);float:right'>Đăng</button>
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+</form>
+
+{% endblock postpage%}

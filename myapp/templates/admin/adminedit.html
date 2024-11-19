@@ -1,0 +1,76 @@
+{% extends "admin/admin.html" %}
+{%load static%}
+
+{% block admin_edit %}
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+<link rel="stylesheet" href="{%static "css/postpage.css"%}">    
+<!-- edit_recipe.html -->
+<h2>Chỉnh sửa công thức</h2>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="container">
+        <div class="card">
+            <div class="container-fliud">
+                <div class="wrapper row">
+                    <div class="wrapper row">
+                        {% if error %}
+                            <p style="color: red;">{{ error }}</p>
+                        {% endif %}
+    <div class="preview col-md-6">                
+        <label for="title">Tên món ăn:</label>
+        <input type="text" id="title" name="title" value="{{ recipe.title }}" class="form-control" required>
+    
+        <br>
+    
+        <label for="introduce">Giới thiệu:</label>
+        <textarea id="introduce" name="introduce" class="form-control" required>{{ recipe.introduce }}</textarea>
+   
+        <br>
+   
+        <label for="description">Mô tả:</label>
+        <textarea id="description" name="description" class="form-control" required>{{ recipe.description }}</textarea>
+    
+        <br>
+        <h3>Chọn phân loại món ăn:</h3>
+            <div class="form-group">
+                <label><input type="checkbox" name="classify" value="Chay" {% if "Chay" in recipe.classify %}checked{% endif %}> Chay</label><br>
+                <label><input type="checkbox" name="classify" value="Mặn" {% if "Mặn" in recipe.classify %}checked{% endif %}> Mặn</label><br>
+                <label><input type="checkbox" name="classify" value="Kiên" {% if "Kiên" in recipe.classify %}checked{% endif %}> Kiên</label><br>
+                <label><input type="checkbox" name="classify" value="Béo" {% if "Béo" in recipe.classify %}checked{% endif %}> Béo</label>
+            </div>
+
+        <br>
+        <label for="image">Chọn ảnh mới (nếu có):</label>
+        <input type="file" id="image" name="image" class="form-control">
+    </div>
+    <p></p>
+    
+    <div class="form-group">
+        <h3>Ảnh hiện tại:</h3>
+        {% for image in images %}
+        <br>
+            <div>
+                <img src="{{ image.image.url }}" alt="Recipe Image" width="200">
+                <label>
+                    <input type="checkbox" name="delete_images" value="{{ image.id }}"> Xóa ảnh này
+                </label>
+            </div>
+        {% endfor %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+
+    
+
+    </div>
+</div>
+</div>
+</form>
+
+
+{% endblock admin_edit %}

@@ -1,0 +1,13 @@
+{% extends 'admin/admin.html' %}
+
+{% block content %}
+  <h2>Xóa Bình Luận</h2>
+  <p>Bạn có chắc chắn muốn xóa bình luận này không?</p>
+  <p>Nội dung: "{{ comment.content }}"</p>
+  
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Xóa</button>
+    <a href="{% url 'addetail' comment.recipe.id %}" class="btn btn-secondary">Hủy</a>
+  </form>
+{% endblock %}
